@@ -13,6 +13,7 @@ namespace TFSTest
         {
             Console.WriteLine("Hello, TFS");
             Console.WriteLine("TFS Problems");
+            Console.WriteLine("added new line");
         }
     }
 }
