@@ -1,2 +1,2 @@
 # Telerik-Academy
-telerik academy home work projects
+Telerik academy homework projects
