@@ -18,7 +18,7 @@ namespace Telerik_Academy_Exam_CSharp_Part_1
             else if (b == 6)
             {
                 result = a * c;
-            } 
+            }
             else if (b == 9)
             {
                 result = a % c;
