@@ -1,0 +1,15 @@
+1.    Code::Blocks
+It is a free C, C++ and Fortran IDE.
+Supports multiple compilers, including  Microsoft Visual C++, Borland C++, Watcom , the Intel C++ compiler and many more.
+
+2.    NetBeans
+NetBeans is a cross-platform, opensource  IDE that supports many languages such as  Ajax,C/C++, JavaScript, Ruby, PHP, Python and more. You can create desktop, mobile, web applications using NetBeans.
+
+3.    PSPad (Windows)
+A code editor that support many different language such as C++,CSS, HTML, XHTML,Java, JavaScript, Perl, PHP, Python, SQL, TCL/TK, Unix ShellScript, VBScript, Visual Basic and more. Some features to mention: FTP Client, Macro Recorder, File Search/Replace, Code Explorer and more.
+
+4.    Microsoft Visual Studio Express
+IDE from Microsoft that includes a code editor supporting IntelliSense as well as code refactoring. Built-in languages include C/C++ (via Visual C++), VB.NET and C# and also supports other languages such as, Python, and Ruby, XML/XSLT, HTML/XHTML, JavaScript and CSS.
+
+5.    Aptana Studio
+Aptana Studio is an open source integrated development environment (IDE) for building web applications. Based on Eclipse, it supports JavaScript, HTML, DOM and CSS with code-completion, outlining, JavaScript debugging, error and warning notifications and integrated documentation.
