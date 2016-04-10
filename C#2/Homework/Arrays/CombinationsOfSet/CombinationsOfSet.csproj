@@ -7,7 +7,7 @@
     <ProjectGuid>{BFB5D07C-7959-494A-B588-391B71EAF312}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PermutationsOfSet</RootNamespace>
+    <RootNamespace>CombinationsOfSet</RootNamespace>
     <AssemblyName>Console Application %28Custom%29</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -41,8 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="list.cs" />
-    <Compile Include="PermutationsOfSet.cs" />
+    <Compile Include="CombinationsOfSet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
