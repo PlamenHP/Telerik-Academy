@@ -15,6 +15,7 @@ namespace Namespace
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     class PermutationsOfSet
     {
         static void Main()
@@ -23,44 +24,40 @@ namespace Namespace
             Console.Write("Enter a number N= ");
             int n = int.Parse(Console.ReadLine());
 
-            GeneratePermutations(n);
+
+            Queue<int> data = new Queue<int>(Enumerable.Range(1, n));
+            PrintPermutations(data, n);
         }
 
-        private static void GeneratePermutations(int range)
+        private static void PrintPermutations(Queue<int> data, int selectionsToMake)
         {
-            int selectionsLeft = range;
-            Stack<int> selected = new Stack<int>();
-            Queue<int> set = new Queue<int>();
+            int counter = 0;
+            int[] result = new int[selectionsToMake];
 
-            // initialise the set of numbers to choose from
-            for (int i = 1; i <= range; i++)
+            foreach (var item in data.ToList())
             {
-                set.Enqueue(i);
+                result[counter] = item;
+                data.Dequeue();
+                PickNextItem(data, result, selectionsToMake, counter + 1);
+                data.Enqueue(item);
             }
-
-            for (int i = 1; i <= range; i++)
-            {
-                selected.Push(set.Dequeue());
-                GenerateNode(set, selected, selectionsLeft-1);
-                set.Enqueue(selected.Pop());
-            }
-
         }
 
-        private static void GenerateNode(Queue<int> set, Stack<int> selected, int selectionsLeft)
+        private static void PickNextItem(Queue<int> data, int[] result, int selectionsToMake, int counter)
         {
-            if (selectionsLeft>0)
+            if (counter < selectionsToMake)
             {
-                for (int i = 1; i <= selectionsLeft; i++)
+                foreach (var item in data.ToList())
                 {
-                    selected.Push(set.Dequeue());
-                    GenerateNode(set, selected, selectionsLeft-1);
-                    set.Enqueue(selected.Pop());
+                    result[counter] = item;
+                    data.Dequeue();
+                    PickNextItem(data, result, selectionsToMake, counter + 1);
+                    data.Enqueue(item);
                 }
             }
             else
             {
-                Console.WriteLine("{{{0}}}", string.Join(", ", selected));
+                Console.WriteLine("{{{0}}}", string.Join(", ", result));
             }
         }
     }

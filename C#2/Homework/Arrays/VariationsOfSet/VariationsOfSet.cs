@@ -35,26 +35,25 @@ namespace Namespace
 
         private static void PrintVariations(List<int> data, int selectionsToMake)
         {
-            int selectionsLeft = selectionsToMake;
+            int counter = 0;
             int[] result = new int[selectionsToMake];
 
-                foreach (var item in data)
-	            {
-                    result[selectionsToMake - selectionsLeft] = item;
-                    
-                    PickNextItem(data, result,selectionsToMake, selectionsLeft - 1);		 
-	            }        
+            foreach (var item in data)
+            {
+                result[counter] = item;
+                PickNextItem(data, result, selectionsToMake, counter + 1);
+            }
         }
 
-        private static void PickNextItem(List<int> data, int[] result, int selectionsToMake, int selectionsLeft)
+        private static void PickNextItem(List<int> data, int[] result, int selectionsToMake, int counter)
         {
-            if (selectionsLeft > 0)
+            if (counter < selectionsToMake)
             {
                 foreach (var item in data)
                 {
-                    result[selectionsToMake - selectionsLeft] = item;
-                    PickNextItem(data, result,selectionsToMake, selectionsLeft - 1);
-                }  
+                    result[counter] = item;
+                    PickNextItem(data, result, selectionsToMake, counter + 1);
+                }
             }
             else
             {
