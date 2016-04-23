@@ -16,34 +16,37 @@ namespace Namespace
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     class SequenceNMatrix
     {
         static void Main()
         {
             Console.WriteLine("Problem 3. Sequence n matrix \n");
             Console.Write("enter rows count (N>=3) N= ");
-            //int rows = int.Parse(Console.ReadLine());
-            Console.Write("enter columns count (M>=3) M= ");
-            //int columns = int.Parse(Console.ReadLine());
-            //string[,] matrix = new string[rows, columns];
-            string[,] matrix = new string[,] { { "ha", "fifi", "ho", "hi" }, { "fo", "ha", "hi", "xx" }, { "xxx", "ho", "ha", "xx" } };
+            int rows = int.Parse(Console.ReadLine());
+            Console.Write("enter columns count (M>=3) M= "); Console.WriteLine();
+            int columns = int.Parse(Console.ReadLine());
+            string[,] matrix = new string[rows, columns];
+            string input = string.Empty;
 
-            String input;
-
-            // Console.WriteLine("Enter strings elements");
-            // for (int row = 0; row < rows; row++)
-            // {
-            //     for (int column = 0; column < columns; column++)
-            //     {
-            //         Console.Write("matrix[{0},{1}] = ", row, column);
-            //         input = Console.ReadLine();
-            //         matrix[row, column] = input;
-            //     }
-            // }
-
-
+            Console.WriteLine("Enter strings elements");
+            for (int row = 0; row < rows; row++)
+            {
+                for (int column = 0; column < columns; column++)
+                {
+                    Console.Write("matrix[{0},{1}] = ", row, column);
+                    input = Console.ReadLine();
+                    matrix[row, column] = input;
+                }
+            }
 
             Print(matrix);
+
+            Sequence sec = new Sequence(matrix);
+            List<string> result = sec.GetLongestSequence();
+
+            Console.WriteLine("result:");
+            Console.WriteLine(String.Join(", ", result));
         }
 
         private static void Print(string[,] data)
