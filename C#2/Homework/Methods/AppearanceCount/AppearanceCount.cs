@@ -16,14 +16,25 @@ namespace Namespace
         static void Main()
         {
             Random rnd = new Random();
+            int length = rnd.Next(10, 20);
+            List<int> array = new List<int>(length);
+            for (int i = 0; i < length; i++)
+            {
+                array.Add(rnd.Next(0, 10));
+            }
+            array.ForEach(x => Console.Write("{0} ",x));
+            Console.WriteLine();
+
+            int result = CountAppearance(array);
+            Console.WriteLine("{0}",result);
         }
 
-        static int CountAppearance(int[] array)
+        static int CountAppearance(List<int> array)
         {
             int result = 0;
             Dictionary<int,int> data = new Dictionary<int,int>();
 
-            for (int i = 0; i < array.Length; i++)
+            for (int i = 0; i < array.Count; i++)
             {
                 if (data.ContainsKey(i))
                 {
@@ -34,7 +45,7 @@ namespace Namespace
                     data.Add(i, 1);
                 }
             }
-            result = data.Values.Max();
+            result = data.Keys.Max();
             return result;
         }
     }
