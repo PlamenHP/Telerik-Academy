@@ -36,16 +36,17 @@ namespace Namespace
 
             for (int i = 0; i < array.Count; i++)
             {
-                if (data.ContainsKey(i))
+                if (data.ContainsKey(array[i]))
                 {
-                    data[i]++;
+                    data[array[i]]++;
                 }
                 else
                 {
-                    data.Add(i, 1);
+                    data.Add(array[i], 1);
                 }
             }
-            result = data.Keys.Max();
+
+            result = data.Values.Max();
             return result;
         }
     }
