@@ -18,6 +18,7 @@ namespace Namespace
             short number = short.Parse(Console.ReadLine());
 
             string result = Convert.ToString(number,2);
+            result = result.PadLeft(16,'0');
             Console.WriteLine(result);
         }
     }

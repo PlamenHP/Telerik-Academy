@@ -10,30 +10,46 @@ namespace Namespace
     {
         static void Main()
         {
-            Console.WriteLine("Problem 3. Compare char arrays\n");
-            Console.Write("Enter a word for the first char array: ");
-            string arrayOne = Console.ReadLine();
-            Console.Write("Enter a word for the second char array: ");
-            string arrayTwo = Console.ReadLine();
+            char[] firstArray = Console.ReadLine().ToCharArray();
+            char[] secondArray = Console.ReadLine().ToCharArray();
 
-            int compareResult = My_LexicographicCharArrayComparer.Compare(arrayOne,arrayTwo);
-            string result = string.Empty;
+            for (int i = 0; i < Math.Min(firstArray.Length, secondArray.Length); i++)
+            {
+                if (firstArray[i] > secondArray[i])
+                {
+                    Console.WriteLine(">");
+                    break;
+                }
 
-            if (compareResult == 0)
-            {
-                result = "The char arrays are equal";
-            } 
-            else
-            {
-                result = compareResult > 0? "The first char array is first lexicographicly" : "The second char array is first lexicographicly" ;
+                if (firstArray[i] < secondArray[i])
+                {
+                    Console.WriteLine("<");
+                    break;
+                }
+
+                if (firstArray.Length > secondArray.Length)
+                {
+                    if (i == secondArray.Length - 1)
+                    {
+                        Console.WriteLine(">");
+                    }
+                }
+                else if (firstArray.Length < secondArray.Length)
+                {
+                    if (i == firstArray.Length - 1)
+                    {
+                        Console.WriteLine("<");
+                    }
+                }
+                else if (firstArray.Length == secondArray.Length)
+                {
+                    if (i == firstArray.Length - 1)
+                    {
+                        Console.WriteLine("=");
+                    }
+                }
+
             }
-
-            Print(result);
-        }
-
-        private static void Print(string result)
-        {
-            Console.WriteLine(result);
         }
     }
 }

@@ -12,8 +12,8 @@ namespace Namespace
     {
         static void Main()
         {
-            Console.WriteLine("Problem 1. Allocate array\n");
-            int[] numbers = new int[20];
+            int n = int.Parse(Console.ReadLine());
+            int[] numbers = new int[n];
 
             for (int i = 0; i < numbers.Length; i++)
             {

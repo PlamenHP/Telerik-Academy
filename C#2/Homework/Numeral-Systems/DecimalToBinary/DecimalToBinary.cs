@@ -8,6 +8,8 @@ namespace Namespace
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Numerics;
+    using System.Text;
 
     class DecimalToBinary
     {
@@ -22,6 +24,24 @@ namespace Namespace
             result = DecToBinary2(number);
             Console.WriteLine("Binary v2:  {0}", result);
 
+        }
+
+        // for converting very big numbers
+        private static string DecToBinary(BigInteger number)
+        {
+            StringBuilder binary = new StringBuilder();
+            int reminder = 0;
+
+            while (number > 0)
+            {
+                reminder = (int)BigInteger.Remainder(number, 2);
+                number = number / 2;
+                binary.Append(reminder.ToString());
+            }
+            string result = binary.ToString();
+            result = new string(result.Reverse().ToArray());
+            result.TrimStart('0');
+            return result;
         }
 
         private static string DecToBinary1(int number)

@@ -18,67 +18,42 @@ namespace Namespace
     {
         static void Main()
         {
-            Console.WriteLine("Problem 18.* Remove elements from array\n");
-            Console.WriteLine("Enter integers separated by coma and space, example: 6, 1, 4, 3, 0, 3, 6, 4, 5 \n");
-            List<int> data = Console.ReadLine()
-                .Split(new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(x => int.Parse(x))
-                .ToList();
 
-            List<int> result = new List<int>(GetLongestSequence(data));
+            int n = int.Parse(Console.ReadLine());
+            List<int> array = new List<int>(n);
+            List<int> count = new List<int>(n);
+            List<int> parent = new List<int>(n);
 
-            Console.WriteLine("\n{0}",string.Join(", ", result));
-
-        }
-
-        private static List<int> GetLongestSequence(List<int> data)
-        {
-            List<int> max = new List<int>();
-            List<int> temp = new List<int>();
-
-            for (int i = 0; i < data.Count; i++)
+            for (int i = 0; i < n; i++)
             {
-                temp = GetNode(data, i);
-
-                if (temp.Count > max.Count)
-                {
-                    max = new List<int>(temp);
-                }
-            }
-            return max;
-        }
-
-        private static List<int> GetNode(List<int> data, int current)
-        {
-            List<int> childs = new List<int>();
-            // check for child nodes
-            for (int next = current + 1; next < data.Count; next++)
-            {
-                if (data[current] <= data[next])
-                {
-                    childs.Add(next);
-                }
+                array.Add(int.Parse(Console.ReadLine()));
+                count.Add(1);
+                parent.Add(-1);
             }
 
-            List<int> max = new List<int>();
-            // compare and select the max lenght result from child nodes
-            if (childs.Count > 0)
+            for (int i = 1; i < array.Count; i++)
             {
-                List<int> temp = new List<int>();
-                for (int i = 0; i < childs.Count; i++)
+                for (int j = 0; j < i; j++)
                 {
-                    temp = GetNode(data, childs[i]);
-
-                    if (temp.Count > max.Count)
+                    if (array[j] <= array[i])
                     {
-                        max = new List<int>(temp);
+                        if (parent[i] == -1)
+                        {
+                            parent[i] = j;
+                            count[i] = count[j] + 1;
+                        }
+                        else
+                        {
+                            if (count[j] > count[parent[i]])
+                            {
+                                parent[i] = j;
+                                count[i] = count[j] + 1;
+                            }
+                        }
                     }
                 }
             }
-
-            // insert the current element in front and return
-            max.Insert(0, data[current]);
-            return max;
+            Console.WriteLine(n - count.Max());
         }
     }
 }

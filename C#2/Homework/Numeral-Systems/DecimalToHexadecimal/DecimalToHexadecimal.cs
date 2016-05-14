@@ -6,8 +6,7 @@
 namespace Namespace
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    using System.Numerics;
 
     class DecimalToHexadecimal
     {
@@ -57,6 +56,15 @@ namespace Namespace
                 }
                 number /= 16;
             }
+            return result;
+        }
+
+        //for very large numbers
+        private static string DecimalToHex(BigInteger decimalNumber)
+        {
+            string result = String.Empty;
+            result = decimalNumber.ToString("X");
+            result = result.TrimStart('0');
             return result;
         }
     }

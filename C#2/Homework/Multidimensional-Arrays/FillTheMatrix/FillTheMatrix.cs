@@ -2,7 +2,10 @@
 //  
 //      Write a program that fills and prints a matrix of size (n, n) as shown below:
 //  
-//  Example for n=4:
+//  Example for input:
+//  4                4               4               4
+//  a                b               c               d
+//               
 //  a) 	              b)             c) 		     d)*		 
 //  1	5	9	13    1  8	9	16   7	11	14	16   1	12	11	10
 //  2	6	10	14    2	 7	10	15   4	8	12	15   2	13	16	9
@@ -16,31 +19,39 @@ namespace Namespace
     {
         static void Main()
         {
-            Console.WriteLine("Problem 1. Fill the matrix \n");
-            Console.Write("enter the matrix(n, n) size n= ");
             int n = int.Parse(Console.ReadLine());
+            string matrixType = Console.ReadLine();
 
-            Console.WriteLine("A)");
-            PrintA(n);
-            Console.WriteLine("B)");
-            PrintB(n);
-            Console.WriteLine("C)");
-            PrintC(n);
-            Console.WriteLine("D)");
-            PrintD(n);
+            switch (matrixType)
+            {
+                case "a":
+                    PrintA(n);
+                    break;
+                case "b":
+                    PrintB(n);
+                    break;
+                case "c":
+                    PrintC(n);
+                    break;
+                case "d":
+                    PrintD(n);
+                    break;
+            }
         }
 
-        private static void Print(int[,] data)
+        private static void Print(ref int[,] data)
         {
-            for (int row = 0; row < data.GetLength(0); row++)
+            int rows = data.GetLength(0);
+            int cols = rows;
+
+            for (int row = 0; row < rows; row++)
             {
-                for (int col = 0; col < data.GetLength(0); col++)
+                for (int col = 0; col < cols; col++)
                 {
-                    Console.Write("{0,3}", data[row, col]);
+                    Console.Write("{0}{1}", data[row, col], col == cols - 1 ? "" : " ");
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine("\n");
         }
 
         private static void PrintA(int n)
@@ -56,7 +67,7 @@ namespace Namespace
                     data[col, row] = counter;
                 }
             }
-            Print(data);
+            Print(ref data);
         }
 
         private static void PrintB(int n)
@@ -83,7 +94,7 @@ namespace Namespace
                     }
                 }
             }
-            Print(data);
+            Print(ref data);
         }
 
         private static void PrintC(int n)
@@ -91,7 +102,7 @@ namespace Namespace
             int[,] data = new int[n, n];
             int totalItems = n * n;
             int counter = 0;
-            int indexRow = n-1;
+            int indexRow = n - 1;
             int indexCol = 0;
             int row = indexRow;
             int col = indexCol;
@@ -107,14 +118,14 @@ namespace Namespace
                 }
                 while (row < n && col < n);
 
-                if (indexRow==0 && indexCol < n-1)
+                if (indexRow == 0 && indexCol < n - 1)
                     indexCol++;
                 if (indexRow > 0)
                     indexRow--;
                 row = indexRow;
                 col = indexCol;
             }
-            Print(data);
+            Print(ref data);
         }
 
         private static void PrintD(int n)
@@ -125,9 +136,9 @@ namespace Namespace
             int row = -1;
             int col = 0;
             int boundaryLeft = 0;
-            int boundaryRight = n -1;
+            int boundaryRight = n - 1;
             int boundaryTop = 0;
-            int boundaryBottom = n -1;
+            int boundaryBottom = n - 1;
 
             while (counter < totalItems)
             {
@@ -167,7 +178,7 @@ namespace Namespace
                 boundaryTop++;
                 if (counter == totalItems) break;
             }
-            Print(data);
+            Print(ref data);
         }
     }
 }

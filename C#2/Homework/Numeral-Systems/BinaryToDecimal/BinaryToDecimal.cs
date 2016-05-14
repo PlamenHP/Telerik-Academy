@@ -6,8 +6,7 @@
 namespace Namespace
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    using System.Numerics;
 
     class BinaryToDecimal
     {
@@ -38,6 +37,17 @@ namespace Namespace
                 result = result + ((byte)binary[i] - 48) * Math.Pow(2, ((binary.Length - i) - 1));
             }
             return (int)result;
+        }
+        // for very large numbers
+        private static BigInteger BinToDecimal(string binary)
+        {
+            BigInteger result = 0;
+
+            for (int i = 0; i < binary.Length; i++)
+            {
+                result = result + (BigInteger)(((byte)binary[i] - 48) * Math.Pow(2, ((binary.Length - i) - 1)));
+            }
+            return result;
         }
     }
 }

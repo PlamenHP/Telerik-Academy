@@ -10,29 +10,22 @@ namespace Namespace
     {
         static void Main()
         {
-            Console.WriteLine("Problem 2. Compare arrays\n");
-            Console.Write("Enter the lenght of the arrays: ");
-            int arraylenght = int.Parse(Console.ReadLine());
-            Console.WriteLine("Enter the elements of the first array:");
+            int n = int.Parse(Console.ReadLine());
 
-            int[] arrayOne = new int[arraylenght];
-            for (int i = 0; i < arraylenght; i++)
+            int[] arrayOne = new int[n];
+            for (int i = 0; i < n; i++)
             {
-                Console.Write("element[{0}]=",i);
                 arrayOne[i] = int.Parse(Console.ReadLine());
             }
 
-            Console.WriteLine("enter the elements of the second array:");
-
-            int[] arrayTwo = new int[arraylenght];
-            for (int i = 0; i < arraylenght; i++)
+            int[] arrayTwo = new int[n];
+            for (int i = 0; i < n; i++)
             {
-                Console.Write("element[{0}]=", i);
                 arrayTwo[i] = int.Parse(Console.ReadLine());
             }
 
             bool equal = true;
-            for (int i = 0; i < arraylenght; i++)
+            for (int i = 0; i < n; i++)
             {
                 if (arrayOne[i] != arrayTwo[i])
                 {
@@ -40,7 +33,7 @@ namespace Namespace
                 }                    
             }
 
-            Console.WriteLine("The two arrays {0}, equal", equal?"are":"are not");
+            Console.WriteLine("{0}", equal?"Equal":"Not equal");
         }
     }
 }

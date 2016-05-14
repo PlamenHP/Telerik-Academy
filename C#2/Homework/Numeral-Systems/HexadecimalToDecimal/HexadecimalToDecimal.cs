@@ -6,7 +6,7 @@ namespace Namespace
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
+    using System.Numerics;
 
     class HexadecimalToDecimal
     {
@@ -15,48 +15,48 @@ namespace Namespace
             Console.Write("Enter a Hex number: ");
             string hexNum = Console.ReadLine();
 
-            int result = HexToDecimal1(hexNum);
-            Console.WriteLine(result);
-
-            result = HexToDecimal2(hexNum);
+            BigInteger result = HexToDecimal(hexNum);
             Console.WriteLine(result);
         }
 
         private static int HexToDecimal1(string hexNum)
         {
             int result = 0;
-            result = Convert.ToInt32(hexNum,16);
+            result = Convert.ToInt32(hexNum, 16);
             return result;
         }
 
-        private static int HexToDecimal2(string hexNum)
+        private static BigInteger HexToDecimal(string hexNum)
         {
-            int result = 0;
-            hexNum = hexNum.ToUpper();
+            BigInteger result = 0;
+            hexNum = hexNum.ToLower();
 
             for (int i = 0; i < hexNum.Length; i++)
             {
-                if (hexNum[i] - '0'< 10)
-                {
-                    result = result + (hexNum[i] - '0');
-                }
-                else
-                {
-                    int temp = 0;
-
-                    switch (hexNum[i])
-                    {
-                        case 'A': temp = 10; break;
-                        case 'B': temp = 11; break;
-                        case 'C': temp = 12; break;
-                        case 'D': temp = 13; break;
-                        case 'E': temp = 14; break;
-                        case 'F': temp = 15; break;
-                    }
-                    result = result + temp*(int)Math.Pow(16, i);
-                }
+                char digit = hexNum[hexNum.Length - 1 - i];
+                result += hexdecval[digit] * (BigInteger)Math.Pow(2, i);
             }
             return result;
         }
+
+        private static Dictionary<char, int> hexdecval = new Dictionary<char, int>
+        {
+            {'0', 0},
+            {'1', 1},
+            {'2', 2},
+            {'3', 3},
+            {'4', 4},
+            {'5', 5},
+            {'6', 6},
+            {'7', 7},
+            {'8', 8},
+            {'9', 9},
+            {'a', 10},
+            {'b', 11},
+            {'c', 12},
+            {'d', 13},
+            {'e', 14},
+            {'f', 15},
+        };
     }
 }
