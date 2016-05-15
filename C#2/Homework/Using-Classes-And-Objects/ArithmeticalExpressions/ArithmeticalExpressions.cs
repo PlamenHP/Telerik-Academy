@@ -15,118 +15,300 @@
 namespace Namespace
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
-
+    using System.Globalization;
+    using System.Text;
+    using System.Threading;
     class ArithmeticalExpressions
     {
+        public static List<char> arithmeticOperations = new List<char>() { '+', '-', '*', '/' };
+        public static List<char> brackets = new List<char>() { '(', ')' };
+        public static List<string> functions = new List<string>() { "pow", "sqrt", "ln" };
+
         static void Main()
         {
-            string expression = "(3+5.3) * 2.7 - ln(22) / pow(2.2, -1.7)";
-
-            string formatedExpression = FormatExpression(expression);
-
-            Queue reverseNotation = new Queue(ConvertToReversePolishNotation(formatedExpression));
-
-            Stack result = CalculateReversePolishNotation(reverseNotation);
+            PutInvariantCulture();
+            StartCalculating();
         }
 
-        private static string FormatExpression(string expression)
+        public static void StartCalculating()
         {
-            expression.Replace(" ", string.Empty);
-            List<string> result = new List<string>();
-            decimal currentNumber = 0;
-            char currentOperator = '+';
-
-            foreach (var symbol in expression)
+            string input = Console.ReadLine();
+            while (input.ToLower() != "end" && input.ToLower() != "exit")
             {
-                if (symbol >= '0' && 
-                    symbol <= '9')
+                try
                 {
-                    currentNumber = (currentNumber *10) + (symbol - '0');
-                    continue;
+                    string trimmedInput = input.Replace(" ", string.Empty);
+                    var separatedTokens = SeparateTokens(trimmedInput);
+                    var reversePolishNotataion = ConvertToReversePolishNotation(separatedTokens);
+                    var finalResult = GetResultFromRPN(reversePolishNotataion);
+                    Console.WriteLine("{0:f2}", finalResult);
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception.Message);
+                }
+
+                input = Console.ReadLine();
+            }
+        }
+
+        public static double GetResultFromRPN(Queue<string> queue)
+        {
+            Stack<double> stack = new Stack<double>();
+
+            while (queue.Count != 0)
+            {
+                string currentToken = queue.Dequeue();
+
+                double number;
+                if (double.TryParse(currentToken, out number))
+                {
+                    stack.Push(number);
+                }
+                else if (arithmeticOperations.Contains(currentToken[0]) || functions.Contains(currentToken))
+                {
+                    if (currentToken == "+")
+                    {
+                        if (stack.Count < 2)
+                        {
+                            throw new ArgumentException("Invalid expression");
+                        }
+                        double firstValue = stack.Pop();
+                        double secondValue = stack.Pop();
+
+                        stack.Push(firstValue + secondValue);
+                    }
+                    else if (currentToken == "-")
+                    {
+                        if (stack.Count < 2)
+                        {
+                            throw new ArgumentException("Invalid expression");
+                        }
+                        double firstValue = stack.Pop();
+                        double secondValue = stack.Pop();
+
+                        stack.Push(secondValue - firstValue);
+                    }
+                    else if (currentToken == "*")
+                    {
+                        if (stack.Count < 2)
+                        {
+                            throw new ArgumentException("Invalid expression");
+                        }
+                        double firstValue = stack.Pop();
+                        double secondValue = stack.Pop();
+
+                        stack.Push(firstValue * secondValue);
+                    }
+                    else if (currentToken == "/")
+                    {
+                        if (stack.Count < 2)
+                        {
+                            throw new ArgumentException("Invalid expression");
+                        }
+                        double firstValue = stack.Pop();
+                        double secondValue = stack.Pop();
+
+                        stack.Push(secondValue / firstValue);
+                    }
+                    else if (currentToken == "pow")
+                    {
+                        if (stack.Count < 2)
+                        {
+                            throw new ArgumentException("Invalid expression");
+                        }
+                        double firstValue = stack.Pop();
+                        double secondValue = stack.Pop();
+
+                        stack.Push(Math.Pow(secondValue,firstValue));
+                    }
+                    else if (currentToken == "sqrt")
+                    {
+                        if (stack.Count < 1)
+                        {
+                            throw new ArgumentException("Invalid expression");
+                        }
+                        double value = stack.Pop();
+
+                        stack.Push(Math.Sqrt(value));
+                    }
+                    else if (currentToken == "ln")
+                    {
+                        if (stack.Count < 1)
+                        {
+                            throw new ArgumentException("Invalid expression");
+                        }
+                        double value = stack.Pop();
+
+                        stack.Push(Math.Log(value));
+                    }
+                }
+            }
+
+            if (stack.Count==1)
+            {
+                return stack.Pop();
+            }
+            else
+            {
+                throw new ArgumentException("Invalid expression");
+            }
+            
+        }
+
+        public static int Precedence(string arithmeticOperator)
+        {
+            if (arithmeticOperator == "+" || arithmeticOperator == "-")
+            {
+                return 1;
+            }
+            else
+            {
+                return 2;
+            }
+        }
+
+        public static Queue<string> ConvertToReversePolishNotation(List<string> tokens)
+        {
+            string result = string.Empty;
+            Stack<string> stack = new Stack<string>();
+            Queue<string> queue = new Queue<string>();
+
+            for (int i = 0; i < tokens.Count; i++)
+            {
+                var currenToken = tokens[i];
+                double number = 0;
+
+                if (double.TryParse(currenToken, out number))
+                {
+                    queue.Enqueue(currenToken);
+                }
+                else if (functions.Contains(currenToken))
+                {
+                    stack.Push(currenToken);
+                }
+                else if (currenToken == ",")
+                {
+                    if (!stack.Contains("(") || stack.Count == 0)
+                    {
+                        throw new ArgumentException("Invalid brackets or function separator");
+                    }
+
+                    while (stack.Peek() != "(")
+                    {
+                        queue.Enqueue(stack.Pop());
+                    }
+                }
+                else if (arithmeticOperations.Contains(currenToken[0]))
+                {
+                    while (stack.Count != 0 && arithmeticOperations.Contains(stack.Peek()[0]) && Precedence(currenToken) <= Precedence(stack.Peek()))
+                    {
+                        queue.Enqueue(stack.Pop());
+                    }
+                    stack.Push(currenToken);
+                }
+                else if (currenToken == "(")
+                {
+                    stack.Push("(");
+                }
+                else if (currenToken == ")")
+                {
+                    if (!stack.Contains("(") || stack.Count == 0)
+                    {
+                        throw new ArgumentException("Invalid brackets or function separator");
+                    }
+
+                    while (stack.Peek() != "(")
+                    {
+                        queue.Enqueue(stack.Pop());
+                    }
+                    stack.Pop();
+
+                    if (stack.Count > 0 && functions.Contains(stack.Peek()))
+                    {
+                        queue.Enqueue(stack.Pop());
+                    }
+                }
+
+            }
+
+            while (stack.Count != 0)
+            {
+                if (brackets.Contains(stack.Peek()[0]))
+                {
+                    throw new ArgumentException("Invalid brackets or function separator");
+                }
+
+                queue.Enqueue(stack.Pop());
+            }
+            return queue;
+        }
+
+        public static void PutInvariantCulture()
+        {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+        }
+
+        public static List<string> SeparateTokens(string input)
+        {
+            var result = new List<string>();
+            var number = new StringBuilder();
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (input[i] == '-' && (i == 0 || input[i - 1] == ',' || input[i - 1] == '('))
+                {
+                    number.Append("-");
+                }
+                else if (char.IsDigit(input[i]) || input[i] == '.')
+                {
+                    number.Append(input[i]);
+                }
+                else if (!char.IsDigit(input[i]) && input[i] != '.' && number.Length != 0)
+                {
+                    result.Add(number.ToString());
+                    number.Clear();
+                    i--;
+                }
+                else if (brackets.Contains(input[i]))
+                {
+                    result.Add(input[i].ToString());
+                }
+                else if (arithmeticOperations.Contains(input[i]))
+                {
+                    result.Add(input[i].ToString());
+                }
+                else if (input[i] == ',')
+                {
+                    result.Add(",");
+                }
+                else if (i + 1 < input.Length && input.Substring(i, 2).ToLower() == "ln")
+                {
+                    result.Add("ln");
+                    i++;
+                }
+                else if (i + 2 < input.Length && input.Substring(i, 3).ToLower() == "pow")
+                {
+                    result.Add("pow");
+                    i += 2;
+                }
+                else if (i + 3 < input.Length && input.Substring(i, 4).ToLower() == "sqrt")
+                {
+                    result.Add("sqrt");
+                    i += 3;
                 }
                 else
                 {
-                    if (currentNumber != 0)
-                    {
-                        result.Add(currentNumber.ToString());
-                    }
+                    throw new ArgumentException("Invalid expression");
                 }
-
-                if (symbol == '+' ||
-                    symbol == '-' ||
-                    symbol == '*' ||
-                    symbol == '%' ||
-                    symbol == '(' ||
-                    symbol == ')')
-                {
-                    result.Add(symbol.ToString());
-                    continue;
-                }
-
-                double powerFirst = 0;
-                double number = 0;
-
-                switch (symbol)
-                {
-                    case 'l':
-                        expression.Skip(2);
-                        result.Add(Math.Log(symbol).ToString());
-                        expression.Skip(1);
-                        break;
-                    case 's':
-                        foreach (var c in expression.Skip(4))
-                        {
-                            if (c.Equals(')'))
-                            {
-                                result.Add(Math.Sqrt(double.Parse(number)));
-                                break;
-                            }
-                            number += c;
-                        }
-                        result.Add(Math.Sqrt(number).ToString());
-                        expression.Skip(1);
-                        break;
-                    case 'p':
-                        expression.Skip(3);
-                        powerFirst = symbol;
-                        expression.Skip(1);
-                        result.Add(Math.Pow(powerFirst,symbol).ToString());
-                        expression.Skip(1);
-                        break;
-                } 
             }
-            return result;
-        }
 
-        private static Queue ConvertToReversePolishNotation(string expression)
-        {
-            Queue queue<string> = new Queue<string>();
-            Stack<string> stack = new Stack<string>();
-
-            foreach (var c in expression)
+            if (number.Length != 0)
             {
-                if (char.IsNumber(c))
-                {
-                    string num = c.ToString();
-                    foreach (var n in expression.Skip(1))
-                    {
-                        if (char.IsNumber(n))
-                        {
-
-                        }
-                    }
-                }
+                result.Add(number.ToString());
             }
-            return result;
-        }
 
-        private static Stack CalculateReversePolishNotation(Queue notation)
-        {
-            Stack result = new Stack();
-            string s = string.Empty;
             return result;
         }
     }
