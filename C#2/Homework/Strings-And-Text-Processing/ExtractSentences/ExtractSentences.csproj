@@ -7,8 +7,8 @@
     <ProjectGuid>{787C53C5-3454-4A78-BDF6-F57CE9484525}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Correct_brackets</RootNamespace>
-    <AssemblyName>Correct brackets</AssemblyName>
+    <RootNamespace>ExtractSentences</RootNamespace>
+    <AssemblyName>ExtractSentences</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CorrectBrackets.cs" />
+    <Compile Include="ExtractSentences.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
